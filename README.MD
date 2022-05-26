@@ -1,4 +1,4 @@
-# Experiment with postgraphile
+# Interaxo Notifications API
 
 ---
 

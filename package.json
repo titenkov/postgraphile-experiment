@@ -1,8 +1,7 @@
 {
-  "name": "postgraphile-experiment",
-  "version": "1.0.0",
+  "name": "interaxo-notifications-api",
+  "version": "0.1.0",
   "description": "---",
-  "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
     "watch": "nodemon src/index.js",
@@ -10,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/titenkov/postgraphile-experiment.git"
+    "url": "git+https://github.com/tribiahq/interaxo-notifications-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/titenkov/postgraphile-experiment/issues"
+    "url": "https://github.com/tribiahq/interaxo-notifications-api/issues"
   },
-  "homepage": "https://github.com/titenkov/postgraphile-experiment#readme",
+  "homepage": "https://github.com/tribiahq/interaxo-notifications-api#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",

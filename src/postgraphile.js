@@ -13,9 +13,6 @@ module.exports = postgraphile(
     'public',
     {
       pgSettings(req) {
-        console.log(req);
-        console.log(`User: ${JSON.stringify(req.user)}`);
-  
         const settings = {};
   
         if (req.auth) {
