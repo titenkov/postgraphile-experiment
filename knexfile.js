@@ -1,16 +1,16 @@
 require('dotenv').config()
 
-const { CLIENT, DATABASE, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT } = process.env
+const { CLIENT, DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env
 
 module.exports = {
     development: {
         client: CLIENT,
         connection: {
-            database: DATABASE,
-            user: PG_USER,
-            password: PG_PASSWORD,
-            host: PG_HOST,
-            port: PG_PORT,
+            database: DB_DATABASE,
+            user: DB_USER,
+            password: DB_PASSWORD,
+            host: DB_HOST,
+            port: DB_PORT,
         },
         migrations: {
             directory: __dirname + '/db/migrations',

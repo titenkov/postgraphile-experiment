@@ -1,19 +1,33 @@
 const { postgraphile } = require('postgraphile')
 
-const { DATABASE, PG_USER, PG_PASSWORD, PG_HOST, PG_PORT } = process.env
+const { DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env
 
 module.exports = postgraphile(
     {
-        database: DATABASE,
-        user: PG_USER,
-        password: PG_PASSWORD,
-        host: PG_HOST,
-        port: PG_PORT,
+        database: DB_DATABASE,
+        user: DB_USER,
+        password: DB_PASSWORD,
+        host: DB_HOST,
+        port: DB_PORT,
     },
     'public',
     {
-        watchPg: true,
-        graphiql: true,
-        enhanceGraphiql: true,
+      pgSettings(req) {
+        console.log(req);
+        console.log(`User: ${JSON.stringify(req.user)}`);
+  
+        const settings = {};
+  
+        if (req.auth) {
+          settings['role'] = 'simple_user';
+          settings['jwt.claims.interaxo_id'] = req.auth['https://interaxo.com/uid'];
+        }
+        return settings;
+      },
+      graphqlRoute: '/api/graphql',
+      graphiqlRoute: '/api/graphiql',
+      watchPg: true,
+      graphiql: true,
+      enhanceGraphiql: true,
     }
 )
