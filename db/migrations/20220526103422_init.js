@@ -39,8 +39,8 @@ const secrets = {
 
     // Ensure that users can read only their own notifications
     await knex.raw(`alter table notifications enable row level security`);
-    await knex.raw(`create policy select_notifications on notifications for select to simple_user using (user_id = current_setting('jwt.claims.interaxo_id', true)::text)`);
-    await knex.raw(`create policy update_notifications on notifications for update to simple_user using (user_id = current_setting('jwt.claims.interaxo_id', true)::text)`);
+    await knex.raw(`create policy select_notifications on notifications for select to simple_user using (user_id = current_setting('request.user_id', true)::text)`);
+    await knex.raw(`create policy update_notifications on notifications for update to simple_user using (user_id = current_setting('request.user_id', true)::text)`);
 };
 
 /**
