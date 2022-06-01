@@ -1,5 +1,5 @@
 {
-  "name": "interaxo-notifications-api",
+  "name": "notifications-api",
   "version": "0.1.0",
   "description": "---",
   "scripts": {
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tribiahq/interaxo-notifications-api.git"
+    "url": "git+https://github.com/titenkov/notifications-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tribiahq/interaxo-notifications-api/issues"
+    "url": "https://github.com/titenkov/notifications-api/issues"
   },
-  "homepage": "https://github.com/tribiahq/interaxo-notifications-api#readme",
+  "homepage": "https://github.com/titenkov/notifications-api#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
@@ -28,10 +28,10 @@
     "knex-migrate": "^1.7.4",
     "pg": "^8.7.3",
     "postgraphile": "^4.12.9",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "dotenv": "^16.0.1"
   },
   "devDependencies": {
-    "dotenv": "^16.0.1",
     "nodemon": "^2.0.16"
   }
 }

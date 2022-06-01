@@ -1,6 +1,6 @@
 const { postgraphile } = require('postgraphile')
 
-const { DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, AUTH_TYPE } = process.env
+const { DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, AUTH_TYPE, AUTH_USER_CLAIM } = process.env
 
 module.exports = postgraphile(
     {
@@ -21,7 +21,7 @@ module.exports = postgraphile(
           // Auth0-integration
           if (req.auth) {
             settings['role'] = 'simple_user';
-            settings['request.user_id'] = req.auth['https://interaxo.com/uid'];
+            settings['request.user_id'] = req.auth[AUTH_USER_CLAIM];
           }
         }
 

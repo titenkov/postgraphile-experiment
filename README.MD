@@ -1,4 +1,4 @@
-# Interaxo Notifications API
+# Notifications API
 
 ---
 
@@ -42,5 +42,5 @@ yarn watch
 
 ```
 
-To explore the GraphQL APIs you can use `graphiql`, which is enabled by default and served at `https://localhost:3001/api/graphiql`. It's secured with JWT tokens now, so you can either switch off the authentication middleware or specify the authorization header in `Request Headers` section (you can use the same token, which is used in Interaxo dev).
+To explore the GraphQL APIs you can use `graphiql`, which is enabled by default and served at `https://localhost:3001/api/graphiql`. It's secured with JWT tokens now, so you can either switch off the authentication middleware or specify the authorization header in `Request Headers` section.
 
