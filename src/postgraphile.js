@@ -1,6 +1,11 @@
-const { postgraphile } = require('postgraphile')
+const { postgraphile, makePluginHook } = require('postgraphile')
 
 const { DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, AUTH_TYPE, AUTH_USER_CLAIM } = process.env
+
+const SubscriptionPlugin = require("./subscriptions");
+const { default: PgPubsub } = require("@graphile/pg-pubsub");
+
+const pluginHook = makePluginHook([PgPubsub]);
 
 module.exports = postgraphile(
     {
@@ -29,7 +34,7 @@ module.exports = postgraphile(
           // Plain header-based auth.
           // Do not use in production!
           if (req.headers && req.headers['authorization-key']) {
-            settings['role'] = 'simple_user';
+            settings['role'] = ('system' === req.headers['authorization-key']) ? 'system_user' : 'simple_user';
             settings['request.user_id'] = req.headers['authorization-key'];
           }
         }
@@ -41,5 +46,20 @@ module.exports = postgraphile(
       watchPg: true,
       graphiql: true,
       enhanceGraphiql: true,
+      // Subscriptions
+      pluginHook,
+      subscriptions: true,
+      appendPlugins: [SubscriptionPlugin],
+      websocketMiddlewares: [
+        (req, res, next) => {
+          console.log('!!!!');
+          if (req.headers['authorization-key']) {
+            console.log(`HEADER: ${req.headers['authorization-key']}`);
+            settings['role'] = ('system' === req.headers['authorization-key']) ? 'system_user' : 'simple_user';
+            settings['request.user_id'] = req.headers['authorization-key'];
+          }
+          next();
+        }
+      ]
     }
 )
