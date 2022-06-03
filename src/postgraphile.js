@@ -52,11 +52,8 @@ module.exports = postgraphile(
       appendPlugins: [SubscriptionPlugin],
       websocketMiddlewares: [
         (req, res, next) => {
-          console.log('!!!!');
-          if (req.headers['authorization-key']) {
-            console.log(`HEADER: ${req.headers['authorization-key']}`);
-            settings['role'] = ('system' === req.headers['authorization-key']) ? 'system_user' : 'simple_user';
-            settings['request.user_id'] = req.headers['authorization-key'];
+          if (req.connectionParams['authorization-key']) {
+            req.headers['authorization-key'] = req.connectionParams['authorization-key'];
           }
           next();
         }

@@ -43,16 +43,12 @@ module.exports = makeExtendSchemaPlugin(({ pgSql: sql }) => ({
         _context,
         { graphile: { selectGraphQLResultFromTable } }
       ) {
-        console.log(`EVENT: ${JSON.stringify(event)}`);
-
         const rows = await selectGraphQLResultFromTable(
           sql.fragment`notifications`,
           (tableAlias, sqlBuilder) => {
-            console.log(`TABLE ALIAS: ${tableAlias}`);
-            console.log(`EVENT SUBJECT: ${event.subject}`);
-            sql.fragment`${sqlBuilder.getTableAlias()}.id = ${sql.value(
-              event.subject
-            )}`
+            sqlBuilder.where(
+                sql.fragment`${sqlBuilder.getTableAlias()}.id = ${sql.value(event.subject)}`
+            );
           }
         );
         return rows[0];
