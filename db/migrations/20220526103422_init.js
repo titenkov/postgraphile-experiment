@@ -42,7 +42,7 @@ const secrets = {
     await knex.raw(`alter table notifications enable row level security`);
     await knex.raw(`create policy select_notifications on notifications for select to simple_user, system_user using (user_id = current_setting('request.user_id', true)::text or 'system_user' = current_setting('role', true)::text)`);
     await knex.raw(`create policy update_notifications on notifications for update to simple_user, system_user using (user_id = current_setting('request.user_id', true)::text or 'system_user' = current_setting('role', true)::text)`);
-    await knex.raw(`create policy insert_notifications_system on notifications for insert to system_user with check ('system_user' = current_setting('role', true)::text)`);    
+    await knex.raw(`create policy insert_notifications_system on notifications for insert to system_user with check ('system_user' = current_setting('role', true)::text)`);
 
     await knex.raw(`
     create function graphql_subscription() returns trigger as $$
@@ -59,11 +59,17 @@ const secrets = {
     end;
     $$ language plpgsql volatile set search_path from current;
     `);
-    
+
     await knex.raw(`create trigger notification_created after insert on notifications for each row execute procedure graphql_subscription(
       'notification_created',  -- "event"
       'graphql:notifications:'   -- "topic"
     )`);
+
+    await knex.raw(`
+      create or replace function mark_all_as_read() returns setof notifications as $$
+        update notifications set read = true where read = false RETURNING *;
+      $$ language sql
+    `);
 
     // await knex.raw(`create trigger _500_gql_update after update on notifications for each row execute procedure graphql_subscription('notificationsUpdated', 'graphql:notifications:$1', 'user_id')`)
 };
