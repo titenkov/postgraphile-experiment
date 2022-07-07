@@ -65,13 +65,10 @@ const secrets = {
       'graphql:notifications:'   -- "topic"
     )`);
 
-    await knex.raw(`
-      create or replace function mark_all_as_read() returns setof notifications as $$
-        update notifications set read = true where read = false RETURNING *;
-      $$ language sql
-    `);
-
-    // await knex.raw(`create trigger _500_gql_update after update on notifications for each row execute procedure graphql_subscription('notificationsUpdated', 'graphql:notifications:$1', 'user_id')`)
+     await knex.raw(`create trigger notification_updated after update on notifications for each row execute procedure graphql_subscription(
+      'notification_updated',  -- "event"
+      'graphql:notifications:'   -- "topic"
+    )`);
 };
 
 /**

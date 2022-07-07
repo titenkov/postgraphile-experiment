@@ -2,6 +2,7 @@ const { makeExtendSchemaPlugin, gql, embed } = require("graphile-utils");
 
 module.exports = makeExtendSchemaPlugin(build => {
   const { pgSql: sql } = build;
+
   return {
     typeDefs: gql`
       extend type Notification {
@@ -15,6 +16,25 @@ module.exports = makeExtendSchemaPlugin(build => {
           })}
         )
       }
+
+      type MarkAllAsReadPayload {
+        updated: Int
+        query: Query
+      }
+
+      extend type Mutation {
+        markAllNotificationsAsRead: MarkAllAsReadPayload
+      }
     `,
+    resolvers: {
+      Mutation: {
+        markAllNotificationsAsRead: async (_query, args, context, resolveInfo) => {
+          const { pgClient } = context;
+          const { rowCount } = await pgClient.query(`update notifications set read = true where read = false`);
+
+          return { updated: rowCount, query: build.$$isQuery };
+        },
+      },
+    },
   };
 });

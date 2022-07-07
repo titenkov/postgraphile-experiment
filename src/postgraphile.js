@@ -3,7 +3,7 @@ const { postgraphile, makePluginHook } = require('postgraphile')
 const { DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, AUTH_TYPE, AUTH_USER_CLAIM } = process.env
 
 const SubscriptionPlugin = require("./subscriptions");
-const QueryNotificationsPlugin = require("./notifications");
+const NotificationPlugin = require("./notifications");
 const { default: PgPubsub } = require("@graphile/pg-pubsub");
 
 const pluginHook = makePluginHook([PgPubsub]);
@@ -50,7 +50,7 @@ module.exports = postgraphile(
       // Subscriptions
       pluginHook,
       subscriptions: true,
-      appendPlugins: [SubscriptionPlugin, QueryNotificationsPlugin],
+      appendPlugins: [SubscriptionPlugin, NotificationPlugin],
       websocketMiddlewares: [
         (req, res, next) => {
           if (req.connectionParams['authorization-key']) {
