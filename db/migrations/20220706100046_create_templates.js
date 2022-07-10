@@ -11,7 +11,7 @@ exports.up = async (knex) => {
     .createTable('templates', function (t) {
       t.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
       t.string('type', 255).notNullable();
-      t.string('locale', 3).defaultTo('en');
+      t.string('locale', 5).defaultTo('en-GB');
       t.string('content', 255).notNullable();
     });
 
