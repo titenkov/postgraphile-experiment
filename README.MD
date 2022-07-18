@@ -42,5 +42,9 @@ yarn watch
 
 ```
 
-To explore the GraphQL APIs you can use `graphiql`, which is enabled by default and served at `https://localhost:3001/api/graphiql`. It's secured with JWT tokens now, so you can either switch off the authentication middleware or specify the authorization header in `Request Headers` section.
+To explore the GraphQL APIs you can use `graphiql`, which is enabled by default and served at `http://localhost:3001/api/graphiql`. 
+
+It's not secured by default and run with `AUTH_TYPE=plain`, so you can specify the authorization header in `Request Headers` section (like `authorization-key: beast~mailinator.com@marvel-x-men`).
+
+If you're using HMAC-based authentication (recommended), you need to specify `api-public-key`, `x-user-id` and `x-user-hmac` headers. Read more about it [here](https://notifir.github.io/docs/integration/authentication).
 
