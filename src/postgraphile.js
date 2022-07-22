@@ -30,9 +30,6 @@ module.exports = postgraphile(
     appendPlugins: [SubscriptionPlugin, NotificationPlugin],
     websocketMiddlewares: [
       (req, res, next) => {
-        if (req.connectionParams['authorization-key']) {
-          req.headers['authorization-key'] = req.connectionParams['authorization-key'];
-        }
         if (req.connectionParams['x-api-key']) {
           req.headers['x-api-key'] = req.connectionParams['x-api-key'];
         }

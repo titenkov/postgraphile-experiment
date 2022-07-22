@@ -5,7 +5,6 @@ const db = require('../db')
 const resolveAuthSettings = require('../utils/auth')
 const validate = require("../utils/validate");
 
-const createNotificationQuery = 'INSERT INTO notifications(type, payload, user_id, project_id) VALUES ($1, $2, $3, $4) returning *';
 const requiredMessage = 'This field is required and cannot be empty.';
 
 const router = express.Router()
@@ -44,7 +43,8 @@ router.post('/',
     const { type, user_id, project_id, payload } = req.body
 
     try {
-      const result = await db.query(createNotificationQuery, [type, payload, user_id, project_id])
+      const query = 'INSERT INTO notifications(type, payload, user_id, project_id) VALUES ($1, $2, $3, $4) returning *';
+      const result = await db.query(query, [type, payload, user_id, project_id])
 
       return res.status(201).json({ notification: { id: result[0].id } })
     } catch (e) {
