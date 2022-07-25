@@ -6,7 +6,7 @@ module.exports = makeExtendSchemaPlugin(build => {
   return {
     typeDefs: gql`
       extend type Notification {
-        template(locale: String!): Template! @pgQuery(
+        template(locale: String!): Template @pgQuery(
           source: ${embed(sql.fragment`templates`)}
           withQueryBuilder: ${embed((queryBuilder, args) => {
             queryBuilder.where(
