@@ -16,7 +16,7 @@ const handleAuthExceptions = (err, req, res, next) => {
   if (err.name === "UnauthorizedError") {
     console.log(err); 
     
-    res.status(err.status).json({ errors: [{ message: err.message }] });
+    res.status(err.status).json({ error: 'unauthorized', message: err.message });
     res.end();
   }
 };

@@ -14,19 +14,17 @@ const auth = async function (req, res, next) {
     const settings = await resolveAuthSettings(req);
 
     if (settings.role !== 'system_user') {
-      return res.status(403).json({ errors: [`User ${settings['request.user_id']} doesn't have permission to create notifications`] });
+      return res.status(403).json({ error: 'unauthorized', message: `User ${settings['request.user_id']} doesn't have permission to create notifications` })
     }
 
     if (settings['request.project_id'] !== req.body['project_id']) {
-      return res.status(403).json({ errors: [
-        `User ${settings['request.user_id']} doesn't have permission to create notifications in project ${req.body['project_id']}`]
-      });
+      return res.status(403).json({ error: 'unauthorized', message: `User ${settings['request.user_id']} doesn't have permission to create notifications in project ${req.body['project_id']}` })
     }
 
     return next();
   } catch (err) {
     console.error(err)
-    return res.status(401).json({ errors: [err.message] });
+    return res.status(401).json({ error: 'unauthorized', message: err.message })
   }
 }
 
@@ -49,7 +47,7 @@ router.post('/',
       return res.status(201).json({ notification: { id: result[0].id } })
     } catch (e) {
       console.error(`Failed to create notification ${e}`)
-      return res.status(500).json({errors: ["An error occurred while creating new notification"] })
+      return res.status(500).json({ error: 'internal_server_error', message: `An error occurred while creating new notification: ${e.message}` })
     }
 })
 
