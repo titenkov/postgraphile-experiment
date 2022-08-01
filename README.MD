@@ -9,7 +9,21 @@
 
 ## Quickstart
 
-You can run the Postgres in a [docker container](https://hub.docker.com/_/postgres) using the following commands:
+You can run the entire stack using `docker-compose`:
+
+```bash
+docker-compose up
+```
+
+To explore the GraphQL APIs you can use `graphiql`, which is enabled by default and served at `http://localhost:3001/api/graphiql`. 
+
+It's not secured by default and run with `AUTH_TYPE=plain`, so you can specify the authorization header in `Request Headers` section (like `authorization-key: beast~mailinator.com@marvel-x-men`).
+
+If you're using HMAC-based authentication (recommended), you need to specify `api-public-key`, `x-user-id` and `x-user-hmac` headers. Read more about it [here](https://notifir.github.io/docs/integration/authentication).
+
+## Development
+
+To start Notifir API locally you need to have database running. You can run the Postgres in a [docker container](https://hub.docker.com/_/postgres) using the following commands:
 
 ```bash
 
@@ -42,9 +56,6 @@ yarn watch
 
 ```
 
-To explore the GraphQL APIs you can use `graphiql`, which is enabled by default and served at `http://localhost:3001/api/graphiql`. 
+Make changes in the code and see them live.
 
-It's not secured by default and run with `AUTH_TYPE=plain`, so you can specify the authorization header in `Request Headers` section (like `authorization-key: beast~mailinator.com@marvel-x-men`).
-
-If you're using HMAC-based authentication (recommended), you need to specify `api-public-key`, `x-user-id` and `x-user-hmac` headers. Read more about it [here](https://notifir.github.io/docs/integration/authentication).
-
+Enjoy 🙃

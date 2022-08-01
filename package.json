@@ -1,23 +1,24 @@
 {
-  "name": "notifications-api",
+  "name": "notifir-api",
   "version": "0.1.0",
   "description": "---",
   "scripts": {
-    "start": "node src/index.js",
     "watch": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+    "start": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run && node src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/titenkov/notifications-api.git"
+    "url": "git+https://github.com/notifir/api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/titenkov/notifications-api/issues"
+    "url": "https://github.com/notifir/api/issues"
   },
-  "homepage": "https://github.com/titenkov/notifications-api#readme",
+  "homepage": "https://github.com/notifir/api#readme",
   "dependencies": {
     "@graphile/pg-pubsub": "^4.12.2",
     "body-parser": "^1.20.0",

@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  api:
+    container_name: notifir_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: titenkov/notifir
+    environment:
+      PORT: 3001
+      CLIENT: pg
+      DB_DATABASE: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      NODE_ENV: "production"
+    ports:
+      - 3001:3001
+    depends_on:
+      - db
+    networks:
+      - notifir_network
+  db:
+    container_name: notifir_db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: localhost
+    ports:
+      - 5432:5432
+    volumes:
+      - notifir_db_vol:/var/lib/postgresql/data
+    networks:
+      - notifir_network
+
+networks:
+  notifir_network:
+    driver: bridge
+
+volumes:
+  notifir_db_vol:
