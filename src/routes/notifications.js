@@ -1,7 +1,7 @@
 const express = require('express')
 const { body } = require('express-validator');
 
-const db = require('../db')
+const { db, pgp } = require('../db')
 const resolveAuthSettings = require('../utils/auth')
 const validate = require("../utils/validate");
 
@@ -33,20 +33,22 @@ router.use(auth)
 router.post('/',
   validate([
     body('type').notEmpty().withMessage(requiredMessage),
-    body('user_id').notEmpty().withMessage(requiredMessage),
     body('project_id').notEmpty().withMessage(requiredMessage),
     body('payload').isObject().notEmpty().withMessage(requiredMessage),
+    body('recipients').isArray({ min: 1 }).withMessage(requiredMessage),
   ]),
   async (req, res) => {
-    const { type, user_id, project_id, payload } = req.body
+    const { type, recipients, project_id, payload, action_url } = req.body
+
+    const cs = new pgp.helpers.ColumnSet(['type', 'payload', 'user_id', 'project_id', 'action_url'], { table: 'notifications' });
+    const values = recipients.map(recipient => ({ type, payload, user_id: recipient, project_id, action_url }));
+    const query = pgp.helpers.insert(values, cs) + ' returning id';
 
     try {
-      const query = 'INSERT INTO notifications(type, payload, user_id, project_id) VALUES ($1, $2, $3, $4) returning *';
-      const result = await db.query(query, [type, payload, user_id, project_id])
-
-      return res.status(201).json({ notification: { id: result[0].id } })
-    } catch (e) {
-      console.error(`Failed to create notification ${e}`)
+      const notifications = await db.many(query);
+      return res.status(201).json({ notifications })
+    } catch(e) {
+      console.error('Failed to create notifications', e)
       return res.status(500).json({ error: 'internal_server_error', message: `An error occurred while creating new notification: ${e.message}` })
     }
 })

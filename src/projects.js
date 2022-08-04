@@ -1,4 +1,4 @@
-const db = require('./db');
+const { db } = require('./db');
 const NodeCache = require("node-cache");
 
 // Projects will never be changed, so can be set to infinite?
@@ -17,25 +17,13 @@ async function fetchProjectByKey(key) {
   console.log(`[projects-db] Fetching by key '${key}'`);
 
   try {
-    const res = await db.query(
-      'SELECT * FROM projects WHERE api_public_key = $1',
-      [key]
-    );
+    const project = await db.one('SELECT * FROM projects WHERE api_public_key = $1 LIMIT 1', [key]);
+    cache.set(key, project);
 
-    if (!res || res.length === 0) {
-      console.warn(`Failed to find project by '${key}'`);
-      return;
-    }
-
-    // Project is found, so put it in cache
-    cache.set(key, res[0]);
-
-    return res[0];
+    return project;
   } catch (err) {
-    console.error(`Failed to fetch the project ${err}`);
-    return;
+    console.error(`Failed to fetch the project by '${key}'`, err);
   }
-
 }
 
 module.exports = {
