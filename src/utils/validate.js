@@ -9,7 +9,7 @@ const validate = validations => {
       return next();
     }
 
-    res.status(400).json({ error: 'bad_request', message: errors[0] });
+    res.status(400).json({ error: 'bad_request', message: errors.array()[0].msg });
   };
 };
 

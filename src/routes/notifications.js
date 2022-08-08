@@ -6,8 +6,6 @@ const resolveAuthSettings = require('../utils/auth')
 const validate = require("../utils/validate");
 const { fetchProjectByKey } = require("../projects");
 
-const requiredMessage = 'This field is required and cannot be empty.';
-
 const router = express.Router()
 
 const auth = async function (req, res, next) {
@@ -15,7 +13,7 @@ const auth = async function (req, res, next) {
     const settings = await resolveAuthSettings(req);
 
     if (settings.role !== 'system_user') {
-      return res.status(403).json({ error: 'unauthorized', message: `User ${settings['request.user_id']} doesn't have permission to create notifications` })
+      return res.status(403).json({ error: 'forbidden', message: `User ${settings['request.user_id']} doesn't have permission to create notifications` })
     }
 
     return next();
@@ -29,9 +27,8 @@ router.use(auth)
 
 router.post('/',
   validate([
-    body('type').notEmpty().withMessage(requiredMessage),
-    body('payload').isObject().notEmpty().withMessage(requiredMessage),
-    body('recipients').isArray({ min: 1 }).withMessage(requiredMessage),
+    body('type').notEmpty().withMessage('Field \'type\' is required and cannot be empty.'),
+    body('recipients').isArray({ min: 1 }).withMessage('Field \'recipients\' is required and cannot be empty.'),
   ]),
   async (req, res) => {
     const { type, recipients, payload, action_url } = req.body
