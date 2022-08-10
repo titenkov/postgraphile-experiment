@@ -20,6 +20,23 @@ module.exports = {
     },
   },
 
+  test: {
+    client: CLIENT,
+    connection: {
+      database: DB_DATABASE,
+      user: DB_USER,
+      password: DB_PASSWORD,
+      host: "localhost",
+      port: DB_PORT
+    },
+    migrations: {
+      directory: __dirname + "/db/migrations"
+    },
+    seeds: {
+      directory: __dirname + "/db/seeds",
+    },
+  },
+
   production: {
     client: CLIENT,
     connection: {

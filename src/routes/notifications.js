@@ -1,7 +1,7 @@
 const express = require('express')
 const { body } = require('express-validator');
 
-const { db, pgp } = require('../db')
+const db = require('../db')
 const resolveAuthSettings = require('../utils/auth')
 const validate = require("../utils/validate");
 const { fetchProjectByKey } = require("../projects");
@@ -33,13 +33,10 @@ router.post('/',
   async (req, res) => {
     const { type, recipients, payload, action_url } = req.body
     const project = await fetchProjectByKey(req.headers['x-api-key'])
-
-    const cs = new pgp.helpers.ColumnSet(['type', 'payload', 'user_id', 'project_id', 'action_url'], { table: 'notifications' });
     const values = recipients.map(recipient => ({ type, payload, user_id: recipient, project_id: project.id, action_url }));
-    const query = pgp.helpers.insert(values, cs) + ' returning id';
 
     try {
-      const notifications = await db.many(query);
+      const notifications = await db('notifications').insert(values).returning('id')
       return res.status(201).json({ notifications })
     } catch(e) {
       console.error('Failed to create notifications', e)
