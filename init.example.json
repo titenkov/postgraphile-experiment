@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "id": "default",
+      "templates": [
+        { "type": "folder-created", "locale": "en-GB", "content": "The folder {{ folder }} was created by {{ user }}." },
+        { "type": "folder-created", "locale": "nb-NO", "content": "Oppføringen {{ folder }} ble opprettet av {{ user }}." },
+        { "type": "folder-created", "locale": "sv-SE", "content": "Posten {{ folder }} har skapats av {{ user }}." }
+      ]
+    }
+  ]
+}
