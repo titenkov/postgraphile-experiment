@@ -18,6 +18,7 @@ WORKDIR /notifir/api
 ENV ENV_NAME production
 ENV NODE_ENV production
 ENV NODE_CONFIG_ENV production
+ENV PORT 80
 
 COPY --from=packages-installation /usr/src/notifir/api/package.json .
 COPY --from=packages-installation /usr/src/notifir/api/node_modules ./node_modules
