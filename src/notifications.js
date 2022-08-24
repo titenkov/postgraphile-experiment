@@ -5,8 +5,8 @@ module.exports = makeExtendSchemaPlugin(build => {
   return {
     typeDefs: gql`
       extend type Notification {
-        template(locale: String!): String,
-        content(locale: String!): String @requires(columns: ["payload"])
+        template(locale: String!): String @requires(columns: ["project_id"]),
+        content(locale: String!): String @requires(columns: ["payload", "project_id"])
       }
 
       type MarkAllAsReadPayload {
@@ -30,24 +30,26 @@ module.exports = makeExtendSchemaPlugin(build => {
       Notification: {
         template: async (parent, args, context) => {
           const { pgClient } = context;
-          const { rows } = await pgClient.query(`select content from templates where type = $1 and locale = $2 limit 1`, [parent.type, args.locale]);
+          const { rows } = await pgClient.query(`select content from templates where type = $1 and locale = $2 and project_id = $3 limit 1`,
+            [parent.type, args.locale, parent.projectId]);
 
           if (Array.isArray(rows) && !!rows.length) {
             return rows[0].content
           }
 
-          console.warn(`Template not found. Params: [type: '${parent.type}', locale: '${args.locale}']`)
+          console.warn(`Template not found. Params: [type: '${parent.type}', locale: '${args.locale}', project: '${parent.projectId}']`)
           return null;
         },
         content: async (parent, args, context) => {
           const { pgClient } = context;
-          const { rows } = await pgClient.query(`select content from templates where type = $1 and locale = $2 limit 1`, [parent.type, args.locale]);
+          const { rows } = await pgClient.query(`select content from templates where type = $1 and locale = $2 and project_id = $3 limit 1`,
+            [parent.type, args.locale, parent.projectId]);
 
           if (Array.isArray(rows) && !!rows.length) {
             return nunjucks.renderString(rows[0].content, parent.payload)
           }
 
-          console.warn(`Template not found. Params: [type: '${parent.type}', locale: '${args.locale}']`)
+          console.warn(`Template not found. Params: [type: '${parent.type}', locale: '${args.locale}', project: '${parent.projectId}']`)
           return null;
         },
       }
