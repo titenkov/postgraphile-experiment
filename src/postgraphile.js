@@ -1,5 +1,5 @@
 const { postgraphile, makePluginHook } = require('postgraphile')
-const { DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env
+const { NODE_ENV, DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env
 
 const SubscriptionPlugin = require("./subscriptions");
 const NotificationPlugin = require("./notifications");
@@ -21,9 +21,9 @@ module.exports = postgraphile(
     pgSettings: resolveAuthSettings,
     graphqlRoute: '/api/graphql',
     graphiqlRoute: '/api/graphiql',
-    watchPg: true,
-    graphiql: true,
-    enhanceGraphiql: true,
+    watchPg: 'production' !== NODE_ENV, // Disable watch in production
+    graphiql: 'production' !== NODE_ENV, // Disable graphiql in production
+    enhanceGraphiql: 'production' !== NODE_ENV,
     // Subscriptions
     pluginHook,
     subscriptions: true,
