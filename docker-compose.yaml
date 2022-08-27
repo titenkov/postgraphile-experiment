@@ -9,11 +9,13 @@ services:
     environment:
       PORT: 3001
       CLIENT: pg
-      DB_DATABASE: postgres
+      DB_DATABASE: notifir
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
+      DB_POSTGRES_USER: postgres
+      DB_POSTGRES_PASSWORD: postgres
       NODE_ENV: "production"
     ports:
       - 3001:3001
@@ -27,7 +29,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: notifir
       POSTGRES_PORT: 5432
       POSTGRES_HOST: localhost
     ports:
