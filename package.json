@@ -5,9 +5,9 @@
   "scripts": {
     "watch": "nodemon src/index.js",
     "test": "NODE_ENV=test jest --config jest.config.js --detectOpenHandles",
-    "migrate": "knex migrate:rollback && knex migrate:latest && knex seed:run",
-    "start:seed": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run && node src/index.js",
-    "start": "npx knex migrate:rollback && npx knex migrate:latest && node src/index.js"
+    "migrate": "knex migrate:latest && knex seed:run",
+    "start:seed": "npx knex migrate:latest && npx knex seed:run && node src/index.js",
+    "start": "npx knex migrate:latest && node src/index.js"
   },
   "repository": {
     "type": "git",
