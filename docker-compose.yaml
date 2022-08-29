@@ -23,6 +23,9 @@ services:
       - db
     networks:
       - notifir_network
+#   uncomment if you want to run init script
+#    volumes:
+#      - ./init.json:/notifir/api/init.json
   db:
     container_name: notifir_db
     image: postgres
