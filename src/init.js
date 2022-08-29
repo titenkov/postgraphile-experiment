@@ -34,10 +34,8 @@ module.exports = async () => {
 
   try {
     const projects = content.projects.map(p => ({ id: p.id }));
-    const templates = content.projects.flatMap(project =>
-      project.templates
-        ? project.templates.map(t => ({ type: t.type, locale: t.locale, content: t.content, project_id: project.id }))
-        : []
+    const templates = content.projects.flatMap(p =>
+      p.templates ? p.templates.map(t => ({ type: t.type, locale: t.locale, content: t.content, project_id: p.id })) : []
     );
 
     const isolationLevel = 'read uncommitted';
@@ -45,11 +43,15 @@ module.exports = async () => {
 
     try {
       const projectsRes = await trx('projects').returning('id').insert(projects).onConflict(['id']).ignore()
-      const templatesRes = await trx('templates')
-        .returning(['project_id', 'type', 'locale', 'content'])
-        .insert(templates)
-        .onConflict(['type', 'locale', 'project_id']).merge(['content'])
-        .whereRaw("templates.content != excluded.content");
+      let templatesRes
+
+      if (templates && !!templates.length) {
+        templatesRes = await trx('templates')
+          .returning(['project_id', 'type', 'locale', 'content'])
+          .insert(templates)
+          .onConflict(['type', 'locale', 'project_id']).merge(['content'])
+          .whereRaw("templates.content != excluded.content");
+      }
 
       await trx.commit();
 

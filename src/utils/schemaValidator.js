@@ -31,6 +31,7 @@ const schema = {
   properties: {
     projects: {
       type: "array",
+      minItems: 1,
       "items" : projectSchema
     },
   },
