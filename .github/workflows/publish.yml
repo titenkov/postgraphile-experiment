@@ -34,7 +34,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: titenkov/notifir
+          images: |
+            titenkov/notifir
+            ghcr.io/notifir/notifir
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -47,6 +49,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
