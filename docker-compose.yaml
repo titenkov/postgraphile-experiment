@@ -14,8 +14,6 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_POSTGRES_USER: postgres
-      DB_POSTGRES_PASSWORD: postgres
       NODE_ENV: "production"
     ports:
       - 3001:3001
