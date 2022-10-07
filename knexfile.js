@@ -1,14 +1,14 @@
 require("dotenv").config();
 
-const { CLIENT, DB_DATABASE, DB_POSTGRES_USER, DB_POSTGRES_PASSWORD, DB_HOST, DB_PORT } = process.env;
+const { CLIENT, DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
 module.exports = {
   development: {
     client: CLIENT,
     connection: {
       database: DB_DATABASE,
-      user: DB_POSTGRES_USER, // Migrations have to be run as "superuser"
-      password: DB_POSTGRES_PASSWORD,
+      user: DB_USER, // Migrations have to be run as "superuser"
+      password: DB_PASSWORD,
       host: DB_HOST,
       port: DB_PORT,
     },
@@ -24,8 +24,8 @@ module.exports = {
     client: CLIENT,
     connection: {
       database: DB_DATABASE,
-      user: DB_POSTGRES_USER, // Migrations have to be run as "superuser"
-      password: DB_POSTGRES_PASSWORD,
+      user: DB_USER, // Migrations have to be run as "superuser"
+      password: DB_PASSWORD,
       host: "localhost",
       port: DB_PORT
     },
@@ -41,8 +41,8 @@ module.exports = {
     client: CLIENT,
     connection: {
       database: DB_DATABASE,
-      user: DB_POSTGRES_USER, // Migrations have to be run as "superuser"
-      password: DB_POSTGRES_PASSWORD,
+      user: DB_USER, // Migrations have to be run as "superuser"
+      password: DB_PASSWORD,
       host: DB_HOST,
       port: DB_PORT,
     },
