@@ -21,6 +21,8 @@ It's not secured by default and run with `AUTH_TYPE=plain`, so you can specify t
 
 If you're using HMAC-based authentication (recommended), you need to specify `api-public-key`, `x-user-id` and `x-user-hmac` headers. Read more about it [here](https://notifir.github.io/docs/integration/authentication).
 
+Please note, that minimal supported version of `Postgresql` is 13.0, since `gen_random_uuid()` is used in migrations. Read more about it [here](https://www.postgresql.org/docs/13/functions-uuid.html).
+
 ## Development
 
 To start Notifir API locally you need to have database running. You can run the Postgres in a [docker container](https://hub.docker.com/_/postgres) using the following commands:

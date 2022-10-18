@@ -14,12 +14,9 @@ const secrets = {
  module.exports.up = async (knex, Promise) => {
   console.info('running migration 20220526103422_init');
 
-  await knex.raw('create extension if not exists "uuid-ossp"');
-  await knex.raw('create extension if not exists "pgcrypto"');
-
   await knex.schema
     .createTable('notifications', function (t) {
-      t.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+      t.uuid('id').notNullable().defaultTo(knex.raw('gen_random_uuid()')).primary();
       t.string('type', 255).notNullable();
       t.boolean('read').defaultTo(false);
       t.json('payload').notNullable();
