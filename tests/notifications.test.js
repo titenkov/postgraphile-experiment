@@ -5,25 +5,27 @@ require("dotenv").config();
 const { DB_DATABASE, DB_USER, DB_PASSWORD } = process.env;
 const PORT = 4444
 
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 
 let pgContainer;
 let app;
 let knexClient
 
 beforeAll(async () => {
-  pgContainer = await new GenericContainer("postgres")
+  pgContainer = await new GenericContainer("postgres:11-alpine")
     .withEnv("POSTGRES_USER", DB_USER)
     .withEnv("POSTGRES_PASSWORD", DB_PASSWORD)
     .withEnv("POSTGRES_DB", DB_DATABASE)
     .withExposedPorts(5432)
     .start();
+
   process.env.DB_PORT = pgContainer.getMappedPort(5432);
-  process.env.PORT = PORT
+  process.env.PORT = PORT;
 
-  app = require("../src/app")
-  knexClient = require("../src/db")
+  app = require("../src/app");
+  knexClient = require("../src/db");
 
+  await knexClient.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
   await knexClient.migrate.latest();
   await knexClient.seed.run();
 });

@@ -5,8 +5,6 @@
 exports.up = async (knex) => {
   console.info('running migration 20220706100046_create_templates');
 
-  await knex.raw('create extension if not exists "uuid-ossp"');
-
   await knex.schema
     .createTable('templates', function (t) {
       t.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();

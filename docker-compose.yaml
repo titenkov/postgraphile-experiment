@@ -12,33 +12,40 @@ services:
       DB_DATABASE: notifir
       DB_HOST: db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: notifir
+      DB_PASSWORD: notifir
       NODE_ENV: "production"
     ports:
       - 3001:3001
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - notifir_network
-#   uncomment if you want to run init script
-#    volumes:
-#      - ./init.json:/notifir/api/init.json
+    # uncomment if you want to run init script
+    # volumes:
+    #   - ./init.json:/notifir/api/init.json
   db:
     container_name: notifir_db
-    image: postgres
+    image: postgres:11-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: notifir
+      POSTGRES_PASSWORD: notifir
       POSTGRES_DB: notifir
       POSTGRES_PORT: 5432
       POSTGRES_HOST: localhost
     ports:
       - 5432:5432
     volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - notifir_db_vol:/var/lib/postgresql/data
     networks:
       - notifir_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U notifir"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   notifir_network:
