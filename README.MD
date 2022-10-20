@@ -28,11 +28,17 @@ To start Notifir API locally you need to have database running. You can run the 
 ```bash
 
 docker pull postgres
-docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+docker run --name notifir-db -e POSTGRES_USER=notifir -e POSTGRES_PASSWORD=notifir -p 5432:5432 -d notifir
 
 ```
 
-Once you have a clean DB started, you can set up the data structure and generate seed data:
+Postgres is required to have `uuid-ossp` extension installed. Since the `superuser` permission is required to do that, you need to install it before running the migration and seed scripts.
+
+```bash
+psql -v ON_ERROR_STOP=1 -h localhost -p 5432 --username postgres --dbname notifir -c "create extension if not exists \"uuid-ossp\"";
+```
+
+Once you have the DB ready, you can set up the data structure and generate seed data:
 
 ```bash
 

@@ -5,8 +5,6 @@
  exports.up = async (knex) => {
   console.info('running migration 20220717183449_create_projects');
 
-  await knex.raw('create extension if not exists "uuid-ossp"');
-
   await knex.schema
     .createTable('projects', function (t) {
       t.string('id').unique().notNullable().primary();

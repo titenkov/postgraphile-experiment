@@ -7,7 +7,7 @@ module.exports = {
     client: CLIENT,
     connection: {
       database: DB_DATABASE,
-      user: DB_USER, // Migrations have to be run as "superuser"
+      user: DB_USER,
       password: DB_PASSWORD,
       host: DB_HOST,
       port: DB_PORT,
@@ -24,7 +24,7 @@ module.exports = {
     client: CLIENT,
     connection: {
       database: DB_DATABASE,
-      user: DB_USER, // Migrations have to be run as "superuser"
+      user: DB_USER,
       password: DB_PASSWORD,
       host: "localhost",
       port: DB_PORT
@@ -41,7 +41,7 @@ module.exports = {
     client: CLIENT,
     connection: {
       database: DB_DATABASE,
-      user: DB_USER, // Migrations have to be run as "superuser"
+      user: DB_USER,
       password: DB_PASSWORD,
       host: DB_HOST,
       port: DB_PORT,
