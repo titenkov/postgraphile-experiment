@@ -1,8 +1,18 @@
 const { makeExtendSchemaPlugin, gql, embed } = require("graphile-utils");
+const crypto = require("crypto");
 
 const userNotificationsTopic = (_args, context, _resolveInfo) => {
   if (_args.userId) {
-    return `graphql:notifications:${_args.userId}`
+    // Topic names are limited to 63 characters in length (this is a PostgreSQL limitation),
+    // so we need to ensure that topic name will never exceed this limit. Usernames can be quite
+    // long and lead to postgres errors, so instead of using them we calculate the fixed-length hash.
+    // Note: md5 has the fixed length output of 32 hex digits
+    const userHash = crypto
+      .createHash('md5')
+      .update(_args.userId)
+      .digest('hex');
+
+    return `graphql:notifications:${userHash}`
   } else {
     throw new Error("userId is required");
   }
