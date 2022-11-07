@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS packages-installation
+FROM node:19.0.0-alpine3.16 AS packages-installation
 
 WORKDIR /usr/src/notifir/api
 
@@ -11,7 +11,7 @@ RUN yarn install --silent --non-interactive && yarn cache clean
 
 ################################################################################
 
-FROM node:lts-alpine AS api-production-stage
+FROM node:19.0.0-alpine3.16 AS api-production-stage
 
 WORKDIR /notifir/api
 
