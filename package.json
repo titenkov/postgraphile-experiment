@@ -36,7 +36,7 @@
     "node-cache": "^5.1.2",
     "nunjucks": "^3.2.3",
     "pg": "^8.7.3",
-    "postgraphile": "^4.12.9",
+    "postgraphile": "^4.13.0",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
